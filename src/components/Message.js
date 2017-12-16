@@ -1,6 +1,7 @@
 import React from 'react'
 import CheckBox from './CheckBox'
 import Star from './Star'
+import Label from './Label'
 
 function checkFunction () { console.log('Check toggle!') }
 function starFunction () { console.log('Star toggle!') }
@@ -24,6 +25,7 @@ function Message({ message }) {
         </div>
       </div>
       <div className="col-xs-11">
+        { labels.map((el, i) => <Label key={ i } label={ el } />)}
         <a>
           { subject }
         </a>
