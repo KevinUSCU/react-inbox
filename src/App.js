@@ -18,8 +18,8 @@ class App extends Component {
     return (
       <div className="container">
         <Navbar />
-        <Toolbar />
-        <MessageList />
+        <Toolbar messages={ this.state.messages } />
+        <MessageList messages={ this.state.messages } />
       </div>
     )
   }
