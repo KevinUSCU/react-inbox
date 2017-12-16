@@ -2,6 +2,7 @@ import React from 'react'
 import Button from './Button'
 import Select from './Select'
 
+let unreadMessageCount = 10
 let messageSelected = true
 let allMessagesSelected = false
 const labelOptions = [ 'dev', 'personal', 'gschool' ]
@@ -35,10 +36,15 @@ function Toolbar() {
     <div>
       <div className="row toolbar">
         <div className="col-md-12">
-          <p className="pull-right">
-            <span className="badge badge">{ 2 }</span>
-            { true ? 'unread messages' : 'unread message' }
-          </p>
+        
+          {/* Unread messages badge */}
+          { unreadMessageCount > 0 ?
+            <p className="pull-right">
+              <span className="badge badge">{ unreadMessageCount }</span>
+              { unreadMessageCount > 1 ? 'unread messages' : 'unread message' }
+            </p>
+            : ''
+          }
 
           {/* Select All Button */}
           <Button buttonEnabled={ true }
