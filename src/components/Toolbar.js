@@ -1,8 +1,11 @@
 import React from 'react'
 import Button from './Button'
+import Select from './Select'
 
 let messageSelected = true
 let allMessagesSelected = false
+const applyLabelOptions = [ 'Apply label', 'dev', 'personal', 'gschool' ]
+const removeLabelOptions = [ 'Remove label', 'dev', 'personal', 'gschool' ]
 
 function selectMessages() {
   console.log('Messages selected!!!')
@@ -50,19 +53,9 @@ function Toolbar() {
           
           <Button buttonEnabled={ messageSelected } buttonContents={ 'Mark As Unread' } clickFunction={ markUnread } />
 
-          <select className="form-control label-select" disabled={ messageSelected ? "" : "disabled" } onChange={ applyLabel }>
-            <option>Apply label</option>
-            <option value="dev">dev</option>
-            <option value="personal">personal</option>
-            <option value="gschool">gschool</option>
-          </select>
+          <Select selectEnabled={ messageSelected } selectOptions={ applyLabelOptions } changeFunction={ applyLabel } />
 
-          <select className="form-control label-select" disabled={ messageSelected ? "" : "disabled" } onChange={ removeLabel }>
-            <option>Remove label</option>
-            <option value="dev">dev</option>
-            <option value="personal">personal</option>
-            <option value="gschool">gschool</option>
-          </select>
+          <Select selectEnabled={ messageSelected } selectOptions={ removeLabelOptions } changeFunction={ removeLabel } />
 
           <Button buttonEnabled={ messageSelected }
                   buttonContents={ <i className="fa fa-trash-o"></i> } 
