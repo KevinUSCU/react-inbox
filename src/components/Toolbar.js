@@ -2,7 +2,6 @@ import React from 'react'
 import Button from './Button'
 import Select from './Select'
 
-let unreadMessageCount = 10
 let messageSelected = true
 let allMessagesSelected = false
 const labelOptions = [ 'dev', 'personal', 'gschool' ]
@@ -31,12 +30,13 @@ function markRead() {
   console.log('Marked Read!!!')
 }
 
-function Toolbar() {
+function Toolbar({ messages }) {
+  const unreadMessageCount = messages.filter(el => el.read === false).length
   return (
     <div>
       <div className="row toolbar">
         <div className="col-md-12">
-        
+
           {/* Unread messages badge */}
           { unreadMessageCount > 0 ?
             <p className="pull-right">
