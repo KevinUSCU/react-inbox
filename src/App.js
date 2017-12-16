@@ -9,7 +9,8 @@ class App extends Component {
     super(props)
 
     this.state = {
-      messages: [...messageSeeds]
+      messages: [ ...messageSeeds ],
+      labelOptions: [ 'dev', 'personal', 'gschool' ]
     }
   }
 
@@ -18,7 +19,7 @@ class App extends Component {
     return (
       <div className="container">
         <Navbar />
-        <Toolbar messages={ this.state.messages } />
+        <Toolbar messages={ this.state.messages } labelOptions={this.state.labelOptions} />
         <MessageList messages={ this.state.messages } />
       </div>
     )
