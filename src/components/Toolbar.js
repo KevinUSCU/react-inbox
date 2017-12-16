@@ -4,8 +4,7 @@ import Select from './Select'
 
 let messageSelected = true
 let allMessagesSelected = false
-const applyLabelOptions = [ 'Apply label', 'dev', 'personal', 'gschool' ]
-const removeLabelOptions = [ 'Remove label', 'dev', 'personal', 'gschool' ]
+const labelOptions = [ 'dev', 'personal', 'gschool' ]
 
 function selectMessages() {
   console.log('Messages selected!!!')
@@ -49,13 +48,13 @@ function Toolbar() {
                   clickFunction={ selectMessages }
           />
 
-          <Button buttonEnabled={ messageSelected } buttonContents={ 'Mark As Read' } clickFunction={ markRead } />
+          <Button buttonEnabled={ messageSelected } buttonContents="Mark As Read" clickFunction={ markRead } />
           
-          <Button buttonEnabled={ messageSelected } buttonContents={ 'Mark As Unread' } clickFunction={ markUnread } />
+          <Button buttonEnabled={ messageSelected } buttonContents="Mark As Unread" clickFunction={ markUnread } />
 
-          <Select selectEnabled={ messageSelected } selectOptions={ applyLabelOptions } changeFunction={ applyLabel } />
+          <Select selectEnabled={ messageSelected } selectLabel="Apply label" selectOptions={ labelOptions } changeFunction={ applyLabel } />
 
-          <Select selectEnabled={ messageSelected } selectOptions={ removeLabelOptions } changeFunction={ removeLabel } />
+          <Select selectEnabled={ messageSelected } selectLabel="Remove label" selectOptions={ labelOptions } changeFunction={ removeLabel } />
 
           <Button buttonEnabled={ messageSelected }
                   buttonContents={ <i className="fa fa-trash-o"></i> } 
