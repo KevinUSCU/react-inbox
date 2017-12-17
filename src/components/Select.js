@@ -6,7 +6,7 @@ function Select({ selectEnabled, selectLabel, selectOptions, changeFunction }) {
   })
   return (
     <select className="form-control label-select" disabled={ selectEnabled ? "" : "disabled" } onChange={ changeFunction }>
-      <option>{ selectLabel }</option>
+      <option value=''>{ selectLabel }</option>
       { optionsList }
     </select>
   )
