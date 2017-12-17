@@ -28,6 +28,7 @@ class App extends Component {
 
   applyLabel = (event) => {
     const label = event.target.value
+    event.target.selectedIndex = 0 // reset selection box to default
     if (label) { // ignores cases where the selection header is selected
       this.setState((prevState) => {
         const newMessages = prevState.messages.map(el => {
@@ -46,6 +47,7 @@ class App extends Component {
 
   removeLabel = (event) => {
     const label = event.target.value
+    event.target.selectedIndex = 0 // reset selection box to default
     if (label) { // ignores cases where the selection header is selected
       this.setState((prevState) => {
         const newMessages = prevState.messages.map(el => {
