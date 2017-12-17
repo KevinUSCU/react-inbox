@@ -12,13 +12,10 @@ function Toolbar({ messages, labelOptions, functions }) {
         <div className="col-md-12">
 
           {/* Unread messages badge */}
-          { unreadMessageCount > 0 ?
-            <p className="pull-right">
-              <span className="badge badge">{ unreadMessageCount }</span>
-              { unreadMessageCount > 1 ? 'unread messages' : 'unread message' }
-            </p>
-            : ''
-          }
+          <p className="pull-right">
+            { unreadMessageCount > 0 ? <span className="badge badge">{ unreadMessageCount }</span> : 'no ' }
+            { unreadMessageCount === 1 ? 'unread message' : 'unread messages' }
+          </p>
 
           {/* Select All Button */}
           <Button buttonEnabled={ true }
