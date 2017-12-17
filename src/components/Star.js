@@ -4,7 +4,7 @@ function Star({ isStarred, clickFunction }) {
 
   const eventFunction = (event) => {
     event.stopPropagation()
-    clickFunction()
+    clickFunction(event)
   }
 
   return <i className={ isStarred ? "star fa fa-star" : "star fa fa-star-o" } onClick={ eventFunction }></i>
