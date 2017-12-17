@@ -2,33 +2,10 @@ import React from 'react'
 import Button from './Button'
 import Select from './Select'
 
-function selectMessages() {
-  console.log('Messages selected!!!')
-}
-
-function applyLabel() {
-  console.log('Label Applied!!!')
-}
-
-function removeLabel() {
-  console.log('Label Removed!!!')
-}
-
-function deleteMessages() {
-  console.log('Deleted!!!')
-}
-
-function markUnread() {
-  console.log('Marked Unread!!!')
-}
-
-function markRead() {
-  console.log('Marked Read!!!')
-}
-
-function Toolbar({ messages, labelOptions }) {
+function Toolbar({ messages, labelOptions, functions }) {
   const unreadMessageCount = messages.filter(el => !el.read).length
   const selectedMessageCount = messages.filter(el => el.selected).length
+  const [ toggleSelectAllMessages, applyLabel, removeLabel, deleteMessages, markRead, markUnread ] = functions
   return (
     <div>
       <div className="row toolbar">
@@ -49,7 +26,7 @@ function Toolbar({ messages, labelOptions }) {
                     selectedMessageCount === messages.length ? <i className="fa fa-check-square-o"></i> 
                       : <i className="fa fa-minus-square-o"></i>
                     : <i className="fa fa-square-o"></i> }
-                  clickFunction={ selectMessages }
+                  clickFunction={ toggleSelectAllMessages }
           />
 
           <Button buttonEnabled={ selectedMessageCount } 
