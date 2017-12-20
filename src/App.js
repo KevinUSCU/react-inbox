@@ -2,16 +2,24 @@ import React, { Component } from 'react';
 import Navbar from './components/Navbar'
 import Toolbar from './components/Toolbar'
 import MessageList from './components/MessageList'
-import messageSeeds from './data/seeds'
+// import messageSeeds from './data/seeds' // for using local seeds
 
 class App extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      messages: [ ...messageSeeds ],
+      // messages: [ ...messageSeeds ], // this was for locally stored message seeds
+      messages: [],
       labelOptions: [ 'dev', 'personal', 'gschool' ]
     }
+  }
+
+  // LOAD STATE ON MOUNT
+  async componentDidMount() {
+    const messagesResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/messages`)
+    const messagesJson = await messagesResponse.json()
+    this.setState({ messages: messagesJson._embedded.messages })
   }
 
   // TOOLBAR FUNCTIONS
