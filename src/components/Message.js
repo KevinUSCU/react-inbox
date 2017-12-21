@@ -3,8 +3,8 @@ import CheckBox from './CheckBox'
 import Star from './Star'
 import Label from './Label'
 
-function Message({ message, functions }) {
-  const { id, selected, starred, labels, read, subject } = message
+function Message({ message, selected, functions }) {
+  const { id, starred, labels, read, subject } = message
   const [ toggleCheckBox, toggleStar, selectMessage ] = functions
   return (
     <div id={ id } 
