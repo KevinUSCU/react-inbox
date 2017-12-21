@@ -2,9 +2,9 @@ import React from 'react'
 import Button from './Button'
 import Select from './Select'
 
-function Toolbar({ messages, labelOptions, functions }) {
+function Toolbar({ messages, selected, labelOptions, functions }) {
   const unreadMessageCount = messages.filter(el => !el.read).length
-  const selectedMessageCount = messages.filter(el => el.selected).length
+  const selectedMessageCount = selected.length
   const [ toggleSelectAllMessages, applyLabel, removeLabel, deleteMessages, markRead, markUnread ] = functions
   return (
     <div>
