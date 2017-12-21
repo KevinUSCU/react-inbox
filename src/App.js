@@ -2,16 +2,15 @@ import React, { Component } from 'react';
 import Navbar from './components/Navbar'
 import Toolbar from './components/Toolbar'
 import MessageList from './components/MessageList'
-// import messageSeeds from './data/seeds' // for using local seeds
 
 class App extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      // messages: [ ...messageSeeds ], // this was for locally stored message seeds
       messages: [],
-      labelOptions: [ 'dev', 'personal', 'gschool' ]
+      labelOptions: [ 'dev', 'personal', 'gschool' ],
+      selected: []
     }
   }
 
@@ -22,15 +21,42 @@ class App extends Component {
     this.setState({ messages: messagesJson._embedded.messages })
   }
 
+  // UPDATE FUNCTION
+  updateMessages = async (messageIds, command, attribute) => {
+    const request = {
+      messageIds,
+      command
+    }
+    if (attribute) {
+      const key = Object.keys(attribute)[0]
+      request[key] = attribute[key]
+    }
+    // Send updated data to API
+    await fetch(`${process.env.REACT_APP_API_URL}/api/messages`, {
+      method: 'PATCH',
+      body: JSON.stringify(request),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+    // Update local state from API
+    const messagesResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/messages`)
+    const messagesJson = await messagesResponse.json()
+    this.setState({ messages: messagesJson._embedded.messages })
+  }
+
   // TOOLBAR FUNCTIONS
   toggleSelectAllMessages = () => {
+    // note that selected state is not server-side persistant, so we will only save it to local state
     this.setState((prevState) => {
-      const allMessagesSelected = (prevState.messages.filter(el => el.selected).length === prevState.messages.length)
-      const newMessages = prevState.messages.map(el => {
-        allMessagesSelected ? el.selected = false : el.selected = true
-        return el
-      })
-      return { messages: newMessages }
+      const allMessagesSelected = (prevState.selected.length === prevState.messages.length)
+      // if all messages are selected, deselect all; otherwise select all
+      if (allMessagesSelected) return { selected: [] }
+      else {
+        const newSelected = prevState.messages.map(message => message.id)
+        return { selected: newSelected }
+      }
     })
   }
 
@@ -38,18 +64,7 @@ class App extends Component {
     const label = event.target.value
     event.target.selectedIndex = 0 // reset selection box to default
     if (label) { // ignores cases where the selection header is selected
-      this.setState((prevState) => {
-        const newMessages = prevState.messages.map(el => {
-          if (el.selected) {
-            if (!el.labels.includes(label)) {
-              const newLabels = [ ...el.labels, label ]
-              el.labels = newLabels
-            } 
-          }
-          return el
-        })
-        return { messages: newMessages }
-      })
+      this.updateMessages(this.state.selected, 'addLabel', { label })
     }
   }
 
@@ -57,75 +72,44 @@ class App extends Component {
     const label = event.target.value
     event.target.selectedIndex = 0 // reset selection box to default
     if (label) { // ignores cases where the selection header is selected
-      this.setState((prevState) => {
-        const newMessages = prevState.messages.map(el => {
-          if (el.selected) {
-            const newLabels = el.labels.filter(el => el !== label)
-            el.labels = newLabels 
-          }
-          return el
-        })
-        return { messages: newMessages }
-      })
+      this.updateMessages(this.state.selected, 'removeLabel', { label })
     }
   }
 
   deleteMessages = () => {
-    this.setState((prevState) => {
-      const newMessages = prevState.messages.filter(el => !el.selected)
-      return { messages: newMessages }
-    })
+    this.updateMessages(this.state.selected, 'delete')
+    this.setState({ selected: [] }) // empty selected list since they are deleted
   }
 
   markRead = () => {
-    this.setState((prevState) => {
-      const newMessages = prevState.messages.map(el => {
-        if (el.selected) el.read = true
-        return el
-      })
-      return { messages: newMessages }
-    })
+    this.updateMessages(this.state.selected, 'read', { read: true })
   }
 
   markUnread = () => {
-    this.setState((prevState) => {
-      const newMessages = prevState.messages.map(el => {
-        if (el.selected) el.read = false
-        return el
-      })
-      return { messages: newMessages }
-    })
+    this.updateMessages(this.state.selected, 'read', { read: false })
   }
 
   // MESSAGELIST FUNCTIONS
   toggleCheckBox = (event) => { 
     const messageId = Number(event.target.closest('.message').id)
     this.setState((prevState) => {
-      const newMessages = [ ...prevState.messages ]
-      const index = newMessages.findIndex(el => el.id === messageId)
-      newMessages[index].selected = !newMessages[index].selected
-      return { messages: newMessages }
+      const newSelected = [ ...prevState.selected ] //make copy
+      const index = newSelected.indexOf(messageId) //check for currently selected
+      if (index >= 0) newSelected.splice(index, 1) //remove from selected
+      else newSelected.push(messageId) //add to selected
+      return { selected: newSelected }
     })
   }
 
   toggleStar = (event) => {
     const messageId = Number(event.target.closest('.message').id)
-    this.setState((prevState) => {
-      const newMessages = [ ...prevState.messages ]
-      const index = newMessages.findIndex(el => el.id === messageId)
-      newMessages[index].starred = !newMessages[index].starred
-      return { messages: newMessages }
-    })
+    const currentState = this.state.messages.filter(el => el.id === messageId)[0].starred
+    this.updateMessages([ messageId ], 'star', { star: !currentState })
   }
 
   selectMessage = (event) => {
     const messageId = Number(event.target.closest('.message').id)
-    this.setState((prevState) => {
-      const newMessages = [ ...prevState.messages ]
-      const index = newMessages.findIndex(el => el.id === messageId)
-      newMessages[index].read = true
-      return { messages: newMessages }
-    })
+    this.updateMessages([ messageId ], 'read', { read: true })
   }
 
   // RENDER
@@ -134,10 +118,12 @@ class App extends Component {
       <div className="container">
         <Navbar />
         <Toolbar messages={ this.state.messages }
+                 selected={ this.state.selected }
                  labelOptions={ this.state.labelOptions }
                  functions={[ this.toggleSelectAllMessages, this.applyLabel, this.removeLabel, this.deleteMessages, this.markRead, this.markUnread ]}
         />
         <MessageList messages={ this.state.messages }
+                     selected={ this.state.selected }
                      functions={[ this.toggleCheckBox, this.toggleStar, this.selectMessage ]}
         />
       </div>
