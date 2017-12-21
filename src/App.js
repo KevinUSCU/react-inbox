@@ -60,7 +60,7 @@ class App extends Component {
     event.preventDefault()
     // get form values
     const subject = event.target.subject.value
-    const body = event.target.subject.value
+    const body = event.target.body.value
     // Send post data to API
     await fetch(`${process.env.REACT_APP_API_URL}/api/messages`, {
       method: 'POST',
