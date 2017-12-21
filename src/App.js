@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Navbar from './components/Navbar'
 import Toolbar from './components/Toolbar'
+import ComposeForm from './components/ComposeForm'
 import MessageList from './components/MessageList'
 
 class App extends Component {
@@ -9,8 +10,9 @@ class App extends Component {
 
     this.state = {
       messages: [],
+      selected: [],
       labelOptions: [ 'dev', 'personal', 'gschool' ],
-      selected: []
+      composeFormVisible: false
     }
   }
 
@@ -47,6 +49,12 @@ class App extends Component {
   }
 
   // TOOLBAR FUNCTIONS
+  toggleComposeForm = () => {
+    this.setState(prevState => {
+      return { composeFormVisible: !prevState.composeFormVisible }
+    })
+  }
+
   toggleSelectAllMessages = () => {
     // note that selected state is not server-side persistant, so we will only save it to local state
     this.setState((prevState) => {
@@ -120,8 +128,9 @@ class App extends Component {
         <Toolbar messages={ this.state.messages }
                  selected={ this.state.selected }
                  labelOptions={ this.state.labelOptions }
-                 functions={[ this.toggleSelectAllMessages, this.applyLabel, this.removeLabel, this.deleteMessages, this.markRead, this.markUnread ]}
+                 functions={[ this.toggleComposeForm, this.toggleSelectAllMessages, this.applyLabel, this.removeLabel, this.deleteMessages, this.markRead, this.markUnread ]}
         />
+        { this.state.composeFormVisible && <ComposeForm /> }
         <MessageList messages={ this.state.messages }
                      selected={ this.state.selected }
                      functions={[ this.toggleCheckBox, this.toggleStar, this.selectMessage ]}
