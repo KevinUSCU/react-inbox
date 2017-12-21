@@ -55,6 +55,27 @@ class App extends Component {
     })
   }
 
+  sendMessage = async (event) => {
+    // prevent default refresh
+    event.preventDefault()
+    // get form values
+    const subject = event.target.subject.value
+    const body = event.target.subject.value
+    // Send post data to API
+    await fetch(`${process.env.REACT_APP_API_URL}/api/messages`, {
+      method: 'POST',
+      body: JSON.stringify({ subject, body }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+    // Update local state from API & close form
+    const messagesResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/messages`)
+    const messagesJson = await messagesResponse.json()
+    this.setState({ composeFormVisible: false, messages: messagesJson._embedded.messages })
+  }
+
   toggleSelectAllMessages = () => {
     // note that selected state is not server-side persistant, so we will only save it to local state
     this.setState((prevState) => {
@@ -115,7 +136,7 @@ class App extends Component {
     this.updateMessages([ messageId ], 'star', { star: !currentState })
   }
 
-  selectMessage = (event) => {
+  messageRead = (event) => {
     const messageId = Number(event.target.closest('.message').id)
     this.updateMessages([ messageId ], 'read', { read: true })
   }
@@ -130,10 +151,10 @@ class App extends Component {
                  labelOptions={ this.state.labelOptions }
                  functions={[ this.toggleComposeForm, this.toggleSelectAllMessages, this.applyLabel, this.removeLabel, this.deleteMessages, this.markRead, this.markUnread ]}
         />
-        { this.state.composeFormVisible && <ComposeForm /> }
+        { this.state.composeFormVisible && <ComposeForm function={ this.sendMessage }/> }
         <MessageList messages={ this.state.messages }
                      selected={ this.state.selected }
-                     functions={[ this.toggleCheckBox, this.toggleStar, this.selectMessage ]}
+                     functions={[ this.toggleCheckBox, this.toggleStar, this.messageRead ]}
         />
       </div>
     )
