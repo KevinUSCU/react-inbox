@@ -1,5 +1,5 @@
 # React Inbox
-> Class assignment for Galvanize Web Dev immersive to practice building a frontend in React.
+> Class assignment for Galvanize Web Dev immersive to practice building a front-end in React.
 
 The spec and html was provided as part of the class assignment, but the rest of the code and implementation is mine.
 
