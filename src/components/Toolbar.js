@@ -2,10 +2,10 @@ import React from 'react'
 import Button from './Button'
 import Select from './Select'
 
-function Toolbar({ messages, labelOptions, functions }) {
+function Toolbar({ messages, selected, labelOptions, functions }) {
   const unreadMessageCount = messages.filter(el => !el.read).length
-  const selectedMessageCount = messages.filter(el => el.selected).length
-  const [ toggleSelectAllMessages, applyLabel, removeLabel, deleteMessages, markRead, markUnread ] = functions
+  const selectedMessageCount = selected.length
+  const [ toggleComposeForm, toggleSelectAllMessages, applyLabel, removeLabel, deleteMessages, markRead, markUnread ] = functions
   return (
     <div>
       <div className="row toolbar">
@@ -16,6 +16,12 @@ function Toolbar({ messages, labelOptions, functions }) {
             { unreadMessageCount > 0 ? <span className="badge badge">{ unreadMessageCount }</span> : 'no ' }
             { unreadMessageCount === 1 ? 'unread message' : 'unread messages' }
           </p>
+
+          <Button buttonEnabled={ true }
+                  buttonAlertStyle={ true }
+                  buttonContents={ <i className="fa fa-plus"></i> }
+                  clickFunction={ toggleComposeForm }
+          />
 
           {/* Select All Button */}
           <Button buttonEnabled={ true }

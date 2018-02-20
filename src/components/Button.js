@@ -1,8 +1,8 @@
 import React from 'react'
 
-function Button({ buttonEnabled, buttonContents, clickFunction }) {
+function Button({ buttonEnabled, buttonAlertStyle, buttonContents, clickFunction }) {
   return (
-    <button className="btn btn-default" disabled={ buttonEnabled ? "" : "disabled" } onClick={ clickFunction }>
+    <button className={ buttonAlertStyle ? "btn btn-danger" : "btn btn-default" } disabled={ buttonEnabled ? "" : "disabled" } onClick={ clickFunction }>
       { buttonContents }
     </button>
   )
