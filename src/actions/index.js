@@ -6,7 +6,7 @@ export const getMessageList = () => {
     
     dispatch({
       type: GET_MESSAGE_LIST_SUCCESS,
-      messages: messagesJson._embedded.messages
+      messageList: messagesJson._embedded.messages
     })
   }
 }
