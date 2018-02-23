@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
-import messages from './messages'
+import messageList from './messageList'
 
 export default combineReducers({
-  messages
+  messageList
 })

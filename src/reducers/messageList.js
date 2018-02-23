@@ -5,7 +5,7 @@ const initialState = []
 export default (state = initialState, action) => {
   switch(action.type) {
     case GET_MESSAGE_LIST_SUCCESS:
-      return action.messages
+      return action.messageList
     default: return state
   }
 }
