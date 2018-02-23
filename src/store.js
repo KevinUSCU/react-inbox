@@ -3,15 +3,13 @@ import { createStore, applyMiddleware } from 'redux'
 import rootReducer from './reducers'
 import logger from 'redux-logger'
 
-const initialState = {}
 const middleware = [
   thunk,
   logger
 ]
 
 const store = createStore(
-  rootReducer,
-  initialState,
+  rootReducer, // this will set initial state based on each reducer's initial state
   applyMiddleware(...middleware)
 )
 
