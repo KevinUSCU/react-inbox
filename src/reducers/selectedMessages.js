@@ -1,4 +1,4 @@
-import { TOGGLE_SELECT_ALL_MESSAGES, TOGGLE_SELECT_MESSAGE } from '../actions'
+import { TOGGLE_SELECT_ALL_MESSAGES, TOGGLE_SELECT_MESSAGE, DESELECT_ALL_MESSAGES } from '../actions'
 
 const initialState = []
 
@@ -19,6 +19,9 @@ export default (state = initialState, action) => {
       if (index >= 0) newSelected.splice(index, 1) //remove from selected
       else newSelected.push(action.messageId) //add to selected
       return newSelected
+
+    case DESELECT_ALL_MESSAGES:
+      return []
 
     default: return state
   }
