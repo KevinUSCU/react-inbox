@@ -1,6 +1,6 @@
 import React from 'react'
 
-function CheckBox({ isChecked, clickFunction }) {
+function Checkbox({ isChecked, clickFunction }) {
 
   const captureClick = (event) => {
     event.stopPropagation()
@@ -9,4 +9,4 @@ function CheckBox({ isChecked, clickFunction }) {
   return <input type="checkbox" checked={ isChecked ? "checked" : "" } onClick={ captureClick } onChange={ clickFunction } />
 }
 
-export default CheckBox
+export default Checkbox
