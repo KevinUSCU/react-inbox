@@ -1,8 +1,12 @@
 import React from 'react'
 
-function ComposeForm({ function: sendMessage }) {
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { sendMessage } from '../actions'
+
+function ComposeForm(props) {
   return (
-    <form className="form-horizontal well" onSubmit={ sendMessage }>
+    <form className="form-horizontal well" onSubmit={ props.sendMessage }>
       <div className="form-group">
         <div className="col-sm-8 col-sm-offset-2">
           <h4>Compose Message</h4>
@@ -29,4 +33,13 @@ function ComposeForm({ function: sendMessage }) {
   )
 }
 
-export default ComposeForm
+const mapStateToProps = state => ({})
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+  sendMessage
+}, dispatch)
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ComposeForm)
