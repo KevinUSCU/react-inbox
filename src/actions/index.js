@@ -72,9 +72,10 @@ export const sendMessage = (event) => {
 }
 
 export const TOGGLE_SELECT_ALL_MESSAGES = 'TOGGLE_SELECT_ALL_MESSAGES'
-export const toggleSelectAllMessages = () => {
+export const toggleSelectAllMessages = (messageList) => {
   return {
-    type: TOGGLE_SELECT_ALL_MESSAGES
+    type: TOGGLE_SELECT_ALL_MESSAGES,
+    messageList
   }    
 }
 

@@ -8,10 +8,10 @@ export default (state = initialState, action) => {
     
     case TOGGLE_SELECT_ALL_MESSAGES:
       // note that selected state is not server-side persistant, so we will only save it to local state
-      const allMessagesSelected = (state.selectedMessages.length === state.messageList.length)
+      const allMessagesSelected = (state.length === action.messageList.length)
       // if all messages are selected, deselect all; otherwise select all
       if (allMessagesSelected) return []
-      else return state.messageList.map(message => message.id)
+      else return action.messageList.map(message => message.id)
 
     case TOGGLE_SELECT_MESSAGE:
       const newSelected = [ ...state ] //make copy
