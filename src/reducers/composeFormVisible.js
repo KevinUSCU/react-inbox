@@ -6,7 +6,7 @@ export default (state = intitialState, action) => {
   switch(action.type) {
 
     case TOGGLE_COMPOSE_FORM:
-      return !state.composeFormVisible
+      return !state
 
     default: return state
   }
