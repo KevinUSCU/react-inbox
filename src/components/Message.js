@@ -1,7 +1,11 @@
 import React, { Component } from 'react'
-import CheckBox from './CheckBox'
+import Checkbox from './Checkbox'
 import Star from './Star'
 import Label from './Label'
+
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { messageRead, toggleSelectMessage, toggleStar } from '../actions'
 
 class Message extends Component {
   constructor(props) {
@@ -27,25 +31,24 @@ class Message extends Component {
 
   render() {
     const { id, starred, labels, read, subject } = this.props.message
-    const [ toggleCheckBox, toggleStar, messageRead ] = this.props.functions
-    const selected = this.props.selected
+    const isSelected = this.props.selectedMessages.includes(id) // will be true or false
 
     return (
       <div>
         <div id={ id } 
             className={ 
-                selected ? (read ? "row message read selected" : "row message unread selected")
+                isSelected ? (read ? "row message read selected" : "row message unread selected")
                         : (read ? "row message read" : "row message unread")
             }
-            onClick={ (event) => { this.toggleMessage(); messageRead(event) } }
+            onClick={ (event) => { this.toggleMessage(); this.props.messageRead(event) } }
         >
           <div className="col-xs-1">
             <div className="row">
               <div className="col-xs-2">
-                <CheckBox isChecked={ selected } clickFunction={ toggleCheckBox } />
+                <Checkbox isChecked={ isSelected } clickFunction={ this.props.toggleSelectMessage } />
               </div>
               <div className="col-xs-2">
-                <Star isStarred={ starred } clickFunction={ toggleStar } />
+                <Star isStarred={ starred } clickFunction={ this.props.toggleStar } />
               </div>
             </div>
           </div>
@@ -70,4 +73,18 @@ class Message extends Component {
   }
 }
 
-export default Message
+const mapStateToProps = state => ({
+  messageList: state.messageList,
+  selectedMessages: state.selectedMessages
+})
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+  messageRead,
+  toggleSelectMessage,
+  toggleStar
+}, dispatch)
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Message)
