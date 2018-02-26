@@ -6,7 +6,7 @@ function Navbar() {
       <div className="col">
         <nav className="navbar navbar-default">
           <div className="navbar-header">
-            <a className="navbar-brand">React Inbox</a>
+            <a className="navbar-brand">React Inbox (with Redux!)</a>
           </div>
         </nav>
       </div>
